@@ -1,29 +1,42 @@
-import React, { useState, useEffect, useRef} from "react";
+import  { useState, useEffect, useRef, type JSX} from "react";
 
-const simpleWords = [
+// Define interfaces for the API response structure
+interface Phonetic {
+  text?: string;
+  audio?: string; // Optional because not all phonetics have audio
+}
+
+interface WordDefinition {
+  word: string;
+  phonetic?: string; // Optional
+  phonetics: Phonetic[];
+  // Other properties like meanings, origin, etc., can be added if needed
+}
+
+const simpleWords: string[] = [
   'apple', 'ball', 'cat', 'dog', 'tree', 'bird', 'car', 'book', 'milk', 'water',
   'sun', 'moon', 'star', 'flower', 'bear', 'fish', 'house', 'shoe', 'hat', 'cup'
 ];
 
-function WordPronouncer() {
-    const [word, setWord] = useState('');
-    const [phonetic, setPhonetic] = useState('');
-    const [audioSrc, setAudioSrc] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+function WordPronouncer():  JSX.Element  {
+    const [word, setWord] = useState<string>('');
+    const [phonetic, setPhonetic] = useState<string>('');
+    const [audioSrc, setAudioSrc] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     // useRef to keep a reference to the Audio HTML element
-    const audioRef = useRef(null);
+    const audioRef = useRef<HTMLAudioElement>(null);
 
     // Function to get a random word from our list
-  const getRandomWord = () => {
+  const getRandomWord = (): string => {
     const randomIndex = Math.floor(Math.random() * simpleWords.length);
     return simpleWords[randomIndex];
   };
 
   // Function to fetch word date
 
-const fetchWordData = async (wordToFetch) => {
+const fetchWordData = async (wordToFetch: string): Promise<void> => {
     setLoading(true);
     setError(null);
     setAudioSrc('');
@@ -38,14 +51,18 @@ const fetchWordData = async (wordToFetch) => {
         throw new Error(`Word not found or API error: ${response.statusText}`);
       }
 
-      const data = await response.json();
+         // Explicitly cast the response to an array of WordDefinition
+      const data: WordDefinition[] = await response.json();
 
       // The API returns an array, take the first entry
 
       const entry = data[0];
 
-      // Extract phonetic text (handle cases where it might be missing)
-      const foundAudio = entry.phonetics.find(p => p.audio && p.audio.endsWith('.mp3'))?.audio || '';
+          // Extract phonetic text (handle cases where it might be missing)
+      const foundPhonetic = entry.phonetic || entry.phonetics[0]?.text || '';
+
+  // Extract audio source (find the first MP3 audio link)
+      const foundAudio = entry.phonetics.find((p: Phonetic) => p.audio && p.audio.endsWith('.mp3'))?.audio || '';
 
       setWord(wordToFetch);
       setPhonetic(foundPhonetic);
