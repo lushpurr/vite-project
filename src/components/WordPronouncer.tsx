@@ -95,17 +95,19 @@ const fetchWordData = async (wordToFetch: string): Promise<void> => {
   };
 
   return (
-        <div style={{
-      fontFamily: 'Arial, sans-serif',
-      maxWidth: '400px',
-      margin: '20px auto',
-      padding: '25px',
-      border: '2px solid #4CAF50',
-      borderRadius: '10px',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-      textAlign: 'center',
-      backgroundColor: '#f9f9f9'
-    }}>
+        <div 
+        className="
+          font-sans
+          w-max-[400px]
+          m-5
+          p-6
+          border-2
+          border-[#4CAF50]
+          rounded-[10px]
+          shadow-2xl
+          text-center
+          bg-[#f9f9f9]"
+    >
       <h2 style={{ color: '#333', marginBottom: '15px' }}>Let's Learn a Word!</h2>
 
       {loading && <p style={{ color: '#007bff' }}>Loading word...</p>}
@@ -126,6 +128,7 @@ const fetchWordData = async (wordToFetch: string): Promise<void> => {
             <>
               <button
                 onClick={playAudio}
+              
                 style={{
                   padding: '10px 20px',
                   fontSize: '1.2em',

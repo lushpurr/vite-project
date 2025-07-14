@@ -1,18 +1,23 @@
 
 import WordPronouncer from './components/WordPronouncer.tsx'
+import './App.css'
 
 function App(){
   const appName = "Awesome App";
 
   return (
     <>
-        <h1>My {appName} for Learning!</h1>
-        <hr />
-        <WordPronouncer /> {/* <--- Add your new WordPronouncer component here */}
+        <div className='pl-5'>
+          <h1>My {appName} for Learning!</h1>
+          <hr />
+          <WordPronouncer /> {/* <--- Add your new WordPronouncer component here */}
 
-        <p className="read-the-docs" style={{ marginTop: '20px', fontSize: '0.9em', color: '#888' }}>
-          Powered by React, Vite, and the Free Dictionary API.
-        </p>
+          <p className="read-the-docs " style={{ marginTop: '20px', fontSize: '0.9em', color: '#888' }}>
+            Powered by React, Vite, and the Free Dictionary API.
+          </p>
+
+        </div>
+  
     </>
   )
 
