@@ -1,18 +1,27 @@
 
+import './App.css'
+import AnimatedBackground from './components/AnimatedBackground.tsx';
 import WordPronouncer from './components/WordPronouncer.tsx'
+
 
 function App(){
   const appName = "Awesome App";
 
   return (
     <>
-        <h1>My {appName} for Learning!</h1>
-        <hr />
-        <WordPronouncer /> {/* <--- Add your new WordPronouncer component here */}
+        <AnimatedBackground /> {/* <--- Add the animated background here first */}
 
-        <p className="read-the-docs" style={{ marginTop: '20px', fontSize: '0.9em', color: '#888' }}>
-          Powered by React, Vite, and the Free Dictionary API.
-        </p>
+        <div className='pl-5 relative z-[1] bg-[rgba(255, 255, 255, 0.9)] p-5 min-h-[100vh]'>
+          <h1>My {appName} for Learning!</h1>
+          <hr />
+          <WordPronouncer /> 
+
+          <p className="read-the-docs mt-5 text-sm text-slate-500">
+            Powered by React, Vite, the Free Dictionary API and Pixabay API.
+          </p>
+
+        </div>
+  
     </>
   )
 
