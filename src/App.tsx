@@ -16,8 +16,8 @@ function App(){
           <hr />
           <WordPronouncer /> 
 
-          <p className="read-the-docs " style={{ marginTop: '20px', fontSize: '0.9em', color: '#888' }}>
-            Powered by React, Vite, and the Free Dictionary API.
+          <p className="read-the-docs mt-5 text-sm text-slate-500">
+            Powered by React, Vite, the Free Dictionary API and Pixabay API.
           </p>
 
         </div>
