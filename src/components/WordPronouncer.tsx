@@ -13,39 +13,9 @@ interface WordDefinition {
   // Other properties like meanings, origin, etc., can be added if needed
 }
 
-// Define interfaces for Wikipedia API response structure
-// This can get complex, so we'll simplify to what we need
-interface WikipediaThumbnail {
-  source: string; // The URL of the thumbnail
-  width: number;
-  height: number;
-}
 
-interface WikipediaPage {
-  pageid: number;
-  ns: number;
-  title: string;
-  thumbnail?: WikipediaThumbnail; // Optional thumbnail
-  terms?: {
-    description?: string[]; // Optional description for alt text
-  };
-}
 
-interface WikipediaQueryPages {
-  [key: string]: WikipediaPage; // Pages are returned as an object with page IDs as keys
-}
-
-interface WikipediaResponse {
-  query?: {
-    pages?: WikipediaQueryPages;
-    search?: Array<{
-        pageid: number;
-        title: string;
-        // ... other search properties
-    }>;
-  };
-}
-
+const PIXABAY_API_KEY: string = '51320868-6480bc8a9e8163236e4746bb6'; 
 
 
 const simpleWords: string[] = [
@@ -83,37 +53,27 @@ function WordPronouncer():  JSX.Element  {
     setImageAlt('');
 
     try {
-      // Step 1: Search for a relevant Wikipedia page
-      const searchResponse = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(wordToSearch)}&format=json&srlimit=1&origin=*`
-      );
-      const searchData: WikipediaResponse = await searchResponse.json();
+       // Pixabay API Call
+      const response = await fetch(
+        `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${encodeURIComponent(wordToSearch)}&image_type=illustration&safesearch=true&per_page=3`
+      ); // image_type=illustration for cartoons/clipart
 
-      if (!searchResponse.ok || !searchData.query || !searchData.query.search || searchData.query.search.length === 0) {
-        throw new Error('No Wikipedia page found.');
+      if (!response.ok) {
+        throw new Error(`Pixabay API error: ${response.statusText}`);
       }
 
-      const pageTitle = searchData.query.search[0].title;
+      const data = await response.json(); // Pixabay response is simpler to parse
 
-      // Step 2: Get page details including thumbnail
-      const pageResponse = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages|extracts|terms&piprop=thumbnail&pithumbsize=200&explaintext&exintro&titles=${encodeURIComponent(pageTitle)}&format=json&formatversion=2&origin=*`
-      );
-      const pageData: WikipediaResponse = await pageResponse.json();
+      console.log("RESPONSE", data)
 
-      if (!pageResponse.ok || !pageData.query || !pageData.query.pages) {
-        throw new Error('Failed to get page details.');
-      }
+     if (data.hits && data.hits.length > 0) {
+        // Pick the first result, or you could randomize it:
+        const firstHit = data.hits[0];
+        setImageSrc(firstHit.webformatURL); // webformatURL is good for web display (smaller size)
+        setImageAlt(firstHit.tags || `Image of ${wordToSearch}`); // Pixabay provides 'tags' for alt text
 
-      // Wikipedia returns pages as an object with numerical keys
-      const pageId = Object.keys(pageData.query.pages)[0];
-      const page: WikipediaPage = pageData.query.pages[pageId];
-
-      if (page.thumbnail && page.thumbnail.source) {
-        setImageSrc(page.thumbnail.source);
-        setImageAlt(page.terms?.description?.[0] || `Image of ${page.title}`);
       } else {
-        throw new Error('No relevant image found for this word.');
+        throw new Error('No relevant illustration found on Pixabay.');
       }
 
     } catch (e: unknown) {
@@ -283,7 +243,7 @@ const fetchWordData = async (wordToFetch: string): Promise<void> => {
                   style={{ maxWidth: '100%', maxHeight: '200px', objectFit: 'contain', borderRadius: '8px', border: '1px solid #ccc' }}
                 />
                 <p style={{ fontSize: '0.8em', color: '#666', marginTop: '5px' }}>
-                  Image from Wikipedia
+                  Image from Pixabay
                 </p>
               </>
             )}
