@@ -66,3 +66,58 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+/* ------------------------------------------- */
+/* ANIMATED BACKGROUND STYLES */
+/* ------------------------------------------- */
+
+/* Container for the background animation */
+.animated-background-container {
+  position: fixed; /* Fixes it to the viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Hide circles when they go out of bounds */
+  z-index: -1; /* Place it behind your main content */
+  pointer-events: none; /* Ensure it doesn't block mouse events on content */
+}
+
+/* Styles for individual animated circles */
+.animated-circle {
+  position: absolute; /* Allows precise positioning within the container */
+  bottom: -10%; /* Start below the viewport */
+  border-radius: 50%; /* Make it a circle */
+  opacity: 0; /* Start invisible */
+  animation-name: floatUp; /* Link to our keyframes */
+  animation-iteration-count: infinite; /* Loop infinitely */
+  animation-timing-function: linear; /* Constant speed */
+}
+
+/* Keyframes for the floating animation */
+@keyframes floatUp {
+  0% {
+    transform: translateY(0vh) scale(0.5) translateX(0vw); /* Start from their initial position (bottom: -10%) */
+    opacity: 0;
+  }
+  25% {
+    transform: translateY(-25vh) scale(0.8) translateX(5vw); /* Move up and slightly right */
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-50vh) scale(1.1) translateX(-5vw); /* Move up further and slightly left */
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateY(-75vh) scale(1.0) translateX(2vw); /* Move up more and center */
+    opacity: 0.6;
+  }
+  100% {
+    /* Adjust this value: -100vh means move up 100% of viewport height from start. */
+    /* If started at -10vh, -100vh from there makes them go to -110vh (relative to bottom:0) which is 10vh above top. */
+    /* To stop *almost* at the top, let's use -95vh (so they end up 5vh from the top edge of screen) */
+    transform: translateY(-95vh) scale(0.7) translateX(0vw); /* Move almost to the top of the viewport */
+    opacity: 0; /* Fade out as it reaches the top */
+  }
+}
