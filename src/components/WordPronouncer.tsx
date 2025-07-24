@@ -20,7 +20,7 @@ const simpleWords: string[] = [
   'sun', 'moon', 'star', 'flower', 'bear', 'fish', 'house', 'shoe', 'hat', 'cup'
 ];
 
-function WordPronouncer():  JSX.Element  {
+const WordPronouncer = ():  JSX.Element =>  {
   const [word, setWord] = useState<string>('');
   const [phonetic, setPhonetic] = useState<string>('');
   const [audioSrc, setAudioSrc] = useState<string>('');

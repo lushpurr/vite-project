@@ -4,7 +4,7 @@ import AnimatedBackground from './components/AnimatedBackground.tsx';
 import WordPronouncer from './components/WordPronouncer.tsx'
 
 
-function App(){
+const App = () => {
   const appName = "Awesome App";
 
   return (
