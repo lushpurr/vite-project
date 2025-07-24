@@ -1,4 +1,5 @@
 import  { useState, useEffect, useRef, type JSX, useCallback} from "react";
+import CustomButton from "./UI/Button/Button";
 
 // Define interfaces for the API response structure
 interface Phonetic {
@@ -156,6 +157,10 @@ const WordPronouncer = ():  JSX.Element =>  {
     fetchWordData(getRandomWord());
   };
 
+  const log = () => {
+    console.log('click')
+  }
+
   return (
         <div 
         className="
@@ -190,6 +195,10 @@ const WordPronouncer = ():  JSX.Element =>  {
 
             {audioSrc ? (
               <>
+                <CustomButton
+                  label='Click me'
+                  onClick={log}
+                ></CustomButton>
                 <button
                   onClick={playAudio}
                   style={{
