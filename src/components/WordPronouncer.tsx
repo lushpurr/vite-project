@@ -51,15 +51,18 @@ function WordPronouncer():  JSX.Element  {
     setImageAlt('');
 
     try {
-      const response = await fetch(
-        `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${encodeURIComponent(wordToSearch)}&image_type=illustration&safesearch=true&per_page=3`
-      );
+     const refinedQuery = `${wordToSearch}`;
+  const response = await fetch(
+    `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${encodeURIComponent(refinedQuery)}&image_type=vector&per_page=3`
+  );
+      console.log('word to search ', refinedQuery)
 
       if (!response.ok) {
         throw new Error(`Pixabay API error: ${response.statusText}`);
       }
 
       const data = await response.json();
+      console.log('data', data)
 
       if (data.hits && data.hits.length > 0) {
         const firstHit = data.hits[0];
